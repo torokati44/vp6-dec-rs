@@ -65,6 +65,7 @@ fn main() {
             .flag("-isystem")
             .flag("src/fakelibc")
             .file("src/fakelibc/impl.c")
+            .file("src/fakelibc/qsort.c")
             .define("HAVE_ISINF", "0")
             .define("HAVE_ISNAN", "0");
     } else {
@@ -85,7 +86,9 @@ fn main() {
         .extra_warnings(false)
         .flag("-Wno-attributes")
         .flag("-Wno-ignored-qualifiers")
+        .flag("-Wno-deprecated-declarations")
         .flag("-Wno-switch")
         .flag("-Wno-parentheses")
+        .flag("-Wno-implicit-const-int-float-conversion")
         .compile("vp6");
 }

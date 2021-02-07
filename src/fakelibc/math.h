@@ -1,17 +1,12 @@
-#define    M_PI 3.1415 // TODO
-#define     M_E 2.7 // TODO
+#define M_PI 3.14159265358979323846
+#define M_E 2.71828182845904523536
 
+#define abs(x) ((x) > 0.0 ? (x) : -(x) )
 
-#define abs(x) ( x > 0.0 ? x : -x )
-
-double log (double x);
-int fputs(const char *str, void *stream);
-
-
-double pow(double x, double y);
-double floor(double x);
-double ceil(double x);
-double fabs(double x);
+double pow(double, double);
+double floor(double);
+double ceil(double);
+double fabs(double);
 double asin(double);
 double atan(double);
 double tan(double);
@@ -22,4 +17,5 @@ double tanh(double);
 double cosh(double);
 double sinh(double);
 double sqrt(double);
+double log(double);
 double exp(double);

@@ -5,6 +5,7 @@
 #define SEEK_END 2
 
 #define snprintf(STR, SIZE, FORMAT, ...) 0
-int vsnprintf (char * s, unsigned long n, const char * format, va_list arg );
-int fprintf ( int* stream, const char * format, ... );
-unsigned long fwrite(const void *ptr, unsigned long size, unsigned long nmemb, void *stream);
+int vsnprintf(char *s, unsigned long n, const char * format, va_list arg);
+int fprintf(int *stream, const char *format, ... );
+unsigned long fwrite(const void *ptr, unsigned long size, unsigned long nmemb, int *stream);
+int fputs(const char *str, int *stream);

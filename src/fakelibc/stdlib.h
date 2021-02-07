@@ -1,4 +1,5 @@
 
+typedef unsigned long size_t;
 
 #define getenv(NAME) 0
 
