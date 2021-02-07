@@ -34,14 +34,14 @@ int frame_height(AVFrame *f) {
 typedef struct SwsContext SwsContext;
 
 SwsContext *make_converter_context(AVFrame *yuv_frame) {
-    return sws_getContext (
+    return sws_getContext(
         yuv_frame->width, yuv_frame->height, AV_PIX_FMT_YUV420P,
         yuv_frame->width, yuv_frame->height, AV_PIX_FMT_RGBA,
-        SWS_BICUBIC, NULL, NULL, NULL );
+        SWS_BILINEAR, NULL, NULL, NULL);
 }
 
 void convert_yuv_to_rgba(SwsContext *context, AVFrame *yuv_frame, uint8_t *rgba_data) {
-    int linesize = yuv_frame->linesize[0] * 4;
-    sws_scale (context, yuv_frame->data, yuv_frame->linesize, 0,
+    int linesize = yuv_frame->width * 4;
+    sws_scale(context, yuv_frame->data, yuv_frame->linesize, 0,
         yuv_frame->height, &rgba_data, &linesize);
 }

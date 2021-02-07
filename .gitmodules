@@ -1,3 +1,3 @@
-[submodule "extern/libav"]
-	path = extern/libav
-	url = https://github.com/libav/libav.git
+[submodule "extern/ffmpeg"]
+	path = extern/ffmpeg
+	url = https://git.ffmpeg.org/ffmpeg.git
