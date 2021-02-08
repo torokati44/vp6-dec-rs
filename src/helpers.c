@@ -38,6 +38,9 @@ SwsContext *make_converter_context(AVFrame *yuv_frame) {
         yuv_frame->width, yuv_frame->height, AV_PIX_FMT_YUV420P,
         yuv_frame->width, yuv_frame->height, AV_PIX_FMT_RGBA,
         SWS_BILINEAR, NULL, NULL, NULL);
+        // NOTE: this parameter is a great potential tuning point between image
+        // quality and decoding speed. Some other reasonable values are:
+        // SWS_FAST_BILINEAR, SWS_BICUBIC, SWS_SINC, SWS_LANCZOS, SWS_SPLINE
 }
 
 void convert_yuv_to_rgba(SwsContext *context, AVFrame *yuv_frame, uint8_t *rgba_data) {
