@@ -78,7 +78,7 @@ int open(const char *path, int oflag, ... ) {
   return -1;
 }
 
-ssize_t read(int fildes, void *buf, size_t nbyte) {
+int read(int fildes, void *buf, size_t nbyte) {
   return -1;
 }
 int close(int fildes) {
