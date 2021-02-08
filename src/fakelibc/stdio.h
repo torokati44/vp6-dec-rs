@@ -1,8 +1,14 @@
 #include <stdarg.h>
 
+typedef int FILE;
+
 #define SEEK_SET 0
 #define SEEK_CUR 1
 #define SEEK_END 2
+
+#define stdin (int *)0
+#define stdout (int *)1
+#define stderr (int *)2
 
 #define snprintf(STR, SIZE, FORMAT, ...) 0
 int vsnprintf(char *s, unsigned long n, const char * format, va_list arg);

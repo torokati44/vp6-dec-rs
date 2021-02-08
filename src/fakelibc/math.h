@@ -1,7 +1,8 @@
 #define M_PI 3.14159265358979323846
 #define M_E 2.71828182845904523536
 
-#define abs(x) ((x) > 0.0 ? (x) : -(x) )
+#define abs(x) ((x) > 0 ? (x) : -(x) )
+
 
 double pow(double, double);
 double floor(double);

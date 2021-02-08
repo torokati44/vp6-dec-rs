@@ -82,7 +82,11 @@ fn main() {
             .file("src/fakelibc/impl.c")
             .file("src/fakelibc/qsort.c")
             .define("HAVE_ISINF", "0")
-            .define("HAVE_ISNAN", "0");
+            .define("HAVE_ISNAN", "0")
+            .define("HAVE_LLRINT", "0")
+            .define("HAVE_LLRINTF", "0")
+            .define("HAVE_LRINT", "0")
+            .define("HAVE_LRINTF", "0");
     } else {
         // mostly relying on the system libc
         build
@@ -92,7 +96,11 @@ fn main() {
             .define("HAVE_HYPOT", "1")
             .define("HAVE_ERF", "1")
             .define("HAVE_COPYSIGN", "1")
-            .define("HAVE_CBRT", "1");
+            .define("HAVE_CBRT", "1")
+            .define("HAVE_LLRINT", "1")
+            .define("HAVE_LLRINTF", "1")
+            .define("HAVE_LRINT", "1")
+            .define("HAVE_LRINTF", "1");
     }
 
     build
