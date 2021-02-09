@@ -1,3 +1,4 @@
+#include <stddef.h>
 
 // TODO
 #define strlen(what) 1
@@ -15,7 +16,7 @@ void * memset ( void * ptr, int value, unsigned long num );
 void free(void *ptr);
 void* malloc (unsigned long size);
 void* realloc (void* ptr, unsigned long size);
-unsigned long strspn ( const char * str1, const char * str2 );
+size_t strspn(const char *cs, const char *ct);
 const void * memchr ( const void * ptr, int value, unsigned long num );
 const char * strchr ( const char * str, int character );
 const char * strrchr ( const char * str, int character );

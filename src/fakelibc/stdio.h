@@ -1,4 +1,5 @@
 #include <stdarg.h>
+#include <stddef.h>
 
 typedef int FILE;
 
@@ -11,7 +12,7 @@ typedef int FILE;
 #define stderr (int *)2
 
 #define snprintf(STR, SIZE, FORMAT, ...) 0
-int vsnprintf(char *s, unsigned long n, const char * format, va_list arg);
+int vsnprintf(char *s, size_t n, const char *format, va_list arg);
 int fprintf(int *stream, const char *format, ... );
-unsigned long fwrite(const void *ptr, unsigned long size, unsigned long nmemb, int *stream);
+size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream);
 int fputs(const char *str, int *stream);
