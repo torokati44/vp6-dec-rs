@@ -37,7 +37,7 @@ fn main() {
         "extern/ffmpeg/libavutil/dict.c",
         "extern/ffmpeg/libavutil/error.c",
         "extern/ffmpeg/libavutil/eval.c",
-        "extern/ffmpeg/libavutil/file_open.c",
+        //"extern/ffmpeg/libavutil/file_open.c",
         "extern/ffmpeg/libavutil/frame.c",
         "extern/ffmpeg/libavutil/hwcontext.c",
         "extern/ffmpeg/libavutil/imgutils.c",

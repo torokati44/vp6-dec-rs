@@ -48,3 +48,8 @@ void convert_yuv_to_rgba(SwsContext *context, AVFrame *yuv_frame, uint8_t *rgba_
     sws_scale(context, yuv_frame->data, yuv_frame->linesize, 0,
         yuv_frame->height, &rgba_data, &linesize);
 }
+
+
+int avpriv_open(const char *filename, int flags, ...) {
+    return -1;
+}
