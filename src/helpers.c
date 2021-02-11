@@ -11,6 +11,9 @@
 extern AVCodec ff_vp6f_decoder;
 AVCodec *ff_vp6f_decoder_ptr = &ff_vp6f_decoder;
 
+extern AVCodec ff_vp6a_decoder;
+AVCodec *ff_vp6a_decoder_ptr = &ff_vp6a_decoder;
+
 void packet_set_size(AVPacket *p, int size) {
     if (p->size < size) {
         av_grow_packet(p, size - p->size);
@@ -35,7 +38,7 @@ typedef struct SwsContext SwsContext;
 
 SwsContext *make_converter_context(AVFrame *yuv_frame) {
     return sws_getContext(
-        yuv_frame->width, yuv_frame->height, AV_PIX_FMT_YUV420P,
+        yuv_frame->width, yuv_frame->height, yuv_frame->format,
         yuv_frame->width, yuv_frame->height, AV_PIX_FMT_RGBA,
         SWS_BILINEAR, NULL, NULL, NULL);
         // NOTE: this parameter is a great potential tuning point between image
