@@ -63,8 +63,7 @@ extern "C" {
 
 // These are for our own helpers, mostly hand-crafted.
 extern "C" {
-    pub static mut ff_vp6f_decoder_ptr: *mut AVCodec;
-    pub static mut ff_vp6a_decoder_ptr: *mut AVCodec;
+    pub fn find_vp6_decoder(with_alpha: ::std::os::raw::c_int) -> *mut AVCodec;
 
     pub fn packet_set_size(pkt: *mut AVPacket, size: ::std::os::raw::c_int);
     pub fn packet_data(arg1: *mut AVPacket) -> *mut ::std::os::raw::c_uchar;

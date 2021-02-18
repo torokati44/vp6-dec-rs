@@ -8,11 +8,9 @@
 #include "libavcodec/avcodec.h"
 #include "libswscale/swscale.h"
 
-extern AVCodec ff_vp6f_decoder;
-AVCodec *ff_vp6f_decoder_ptr = &ff_vp6f_decoder;
-
-extern AVCodec ff_vp6a_decoder;
-AVCodec *ff_vp6a_decoder_ptr = &ff_vp6a_decoder;
+AVCodec *find_vp6_decoder(int with_alpha) {
+    return avcodec_find_decoder(with_alpha ? AV_CODEC_ID_VP6A : AV_CODEC_ID_VP6F);
+}
 
 void packet_set_size(AVPacket *p, int size) {
     if (p->size < size) {

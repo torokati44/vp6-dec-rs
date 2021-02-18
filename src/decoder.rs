@@ -12,7 +12,7 @@ pub struct VP6State {
 impl VP6State {
     pub fn new(with_alpha: bool) -> Self {
         unsafe {
-            let codec = if with_alpha {ff_vp6a_decoder_ptr} else {ff_vp6f_decoder_ptr};
+            let codec: *mut AVCodec = find_vp6_decoder(if with_alpha { 1 } else { 0 });
             let context: *mut AVCodecContext = avcodec_alloc_context3(codec);
 
             avcodec_open2(context, codec, std::ptr::null_mut::<*mut AVDictionary>());
