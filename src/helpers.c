@@ -50,7 +50,7 @@ void convert_yuv_to_rgba(SwsContext *context, AVFrame *yuv_frame, uint8_t *rgba_
         yuv_frame->height, &rgba_data, &linesize);
 }
 
-
+// This is actually a stub for the web build, but not at the libc level, so it's here.
 int avpriv_open(const char *filename, int flags, ...) {
     return -1;
 }
