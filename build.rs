@@ -21,7 +21,6 @@ fn main() {
             // The happy case; All three necessary FFmpeg libraries were found on
             // the system, so the only thing we have to build is a bit of glue.
             build
-                .files(&["src/helpers.c"])
                 .includes(avutil.include_paths)
                 .includes(avcodec.include_paths)
                 .includes(swscale.include_paths);
@@ -98,7 +97,6 @@ fn main() {
                 "extern/ffmpeg/libswscale/utils.c",
                 "extern/ffmpeg/libswscale/vscale.c",
                 "extern/ffmpeg/libswscale/yuv2rgb.c",
-                "src/helpers.c",
             ]);
 
             let target = std::env::var("TARGET").unwrap();
@@ -144,10 +142,11 @@ fn main() {
                 .flag("-Wno-ignored-qualifiers")
                 .flag("-Wno-deprecated-declarations")
                 .flag("-Wno-parentheses")
-                .flag("-Wno-implicit-const-int-float-conversion")*/
+                .flag("-Wno-implicit-const-int-float-conversion")
+                */
                 ;
         }
     }
 
-    build.compile("vp6");
+    build.file("src/helpers.c").compile("vp6");
 }
