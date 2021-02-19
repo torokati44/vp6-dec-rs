@@ -2,15 +2,16 @@ extern crate cc;
 extern crate pkg_config;
 
 fn main() {
-    // TODO: set reasonable minimum versions
+    // Minimum versions according to:
+    // https://github.com/ruffle-rs/ruffle/pull/3004#issuecomment-781735152
     let avutil = pkg_config::Config::new()
-        .atleast_version("56.0.0")
+        .atleast_version("55.0.100")
         .probe("libavutil");
     let avcodec = pkg_config::Config::new()
-        .atleast_version("58.0.0")
+        .atleast_version("57.0.100")
         .probe("libavcodec");
     let swscale = pkg_config::Config::new()
-        .atleast_version("5.0.0")
+        .atleast_version("4.1.100")
         .probe("libswscale");
 
     let mut build = cc::Build::new();
