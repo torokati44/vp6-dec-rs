@@ -4,14 +4,18 @@ extern crate pkg_config;
 fn main() {
     // Minimum versions according to:
     // https://github.com/ruffle-rs/ruffle/pull/3004#issuecomment-781735152
+    const LIBAVUTIL_MIN: &str = "55.0.100";
+    const LIBAVCODEC_MIN: &str = "57.0.100";
+    const LIBSWSCALE_MIN: &str = "4.1.100";
+
     let avutil = pkg_config::Config::new()
-        .atleast_version("55.0.100")
+        .atleast_version(LIBAVUTIL_MIN)
         .probe("libavutil");
     let avcodec = pkg_config::Config::new()
-        .atleast_version("57.0.100")
+        .atleast_version(LIBAVCODEC_MIN)
         .probe("libavcodec");
     let swscale = pkg_config::Config::new()
-        .atleast_version("4.1.100")
+        .atleast_version(LIBSWSCALE_MIN)
         .probe("libswscale");
 
     let mut build = cc::Build::new();
@@ -29,6 +33,11 @@ fn main() {
         _ => {
             // Resorting to building the VP6 decoder statically,
             // from the FFmpeg sources in the git submodule.
+            if !cfg!(feature = "allow-lgpl") {
+                panic!(concat!("Required libraries could not be found, and compiling in LGPL code was not allowed.\n",
+                    "Either install libavutil >={:}, libavcodec >={:}, and libswscale >={:};\n",
+                    "Or enable the feature `allow-lgpl`."), LIBAVUTIL_MIN, LIBAVCODEC_MIN, LIBSWSCALE_MIN);
+            }
 
             build.files(&[
                 "extern/ffmpeg/libavcodec/allcodecs.c",
