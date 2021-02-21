@@ -74,7 +74,6 @@ fn main() {
                 "extern/ffmpeg/libavutil/error.c",
                 "extern/ffmpeg/libavutil/utils.c",
                 "extern/ffmpeg/libavutil/eval.c",
-                //"extern/ffmpeg/libavutil/file_open.c",
                 "extern/ffmpeg/libavutil/frame.c",
                 "extern/ffmpeg/libavutil/hwcontext.c",
                 "extern/ffmpeg/libavutil/imgutils.c",
@@ -109,7 +108,7 @@ fn main() {
             ]);
 
             let target = std::env::var("TARGET").unwrap();
-            if target == "wasm32-unknown-unknown" || target == "x86_64-pc-windows-msvc" {
+            if target == "wasm32-unknown-unknown" {
                 // relying on our fake libc fragment
                 build
                     .define("MALLOC_PREFIX", "vp6_custom_")
@@ -137,6 +136,16 @@ fn main() {
                     .define("HAVE_LLRINTF", "1")
                     .define("HAVE_LRINT", "1")
                     .define("HAVE_LRINTF", "1");
+
+                if target == "x86_64-pc-windows-msvc" {
+                    build
+                        .define("HAVE_LIBC_MSVCRT", "1")
+                        .define("HAVE_UNISTD_H", "0");
+                } else {
+                    build
+                        .define("HAVE_LIBC_MSVCRT", "0")
+                        .define("HAVE_UNISTD_H", "1");
+                }
             }
 
             build
