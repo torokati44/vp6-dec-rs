@@ -11,6 +11,9 @@ env:
 
 jobs:
   build:
+    defaults:
+      run:
+        shell: bash -l {0}
     name: Test Rust ${{ matrix.rust_version }} / ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.rust_version == 'nightly' }}
@@ -33,6 +36,15 @@ jobs:
         override: true
         components: rustfmt, clippy
         target: wasm32-unknown-unknown
+
+    - name: Setup conda
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        activate-environment: devtools
+
+    - name: Add msys to PATH for clang
+      if: matrix.os == 'windows-latest'
+      run: echo "C:\msys64\mingw64\bin" >> $GITHUB_PATH
 
     - name: Run tests
       uses: actions-rs/cargo@v1
