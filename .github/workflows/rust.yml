@@ -37,11 +37,6 @@ jobs:
         components: rustfmt, clippy
         target: wasm32-unknown-unknown
 
-    - name: Setup conda
-      uses: conda-incubator/setup-miniconda@v2
-      with:
-        activate-environment: devtools
-
     - name: Add msys to PATH for clang
       if: matrix.os == 'windows-latest'
       run: echo "C:\msys64\mingw64\bin" >> $GITHUB_PATH
