@@ -22,7 +22,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    
+
 
     - name: Install Rust toolchain
       uses: actions-rs/toolchain@v1
@@ -37,6 +37,7 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         command: test
+        args: --all-features
 
     - name: Check clippy
       uses: actions-rs/cargo@v1
@@ -49,7 +50,7 @@ jobs:
       with:
         command: fmt
         args: --all -- --check
-    
+
     # wasm-bindgen-cli version must match wasm-bindgen crate version.
     # Be sure to update in release_nightly.yml, web/Cargo.toml and web/README.md.
     - name: Install wasm-bindgen
@@ -65,10 +66,12 @@ jobs:
     - name: Install binaryen
       shell: bash -l {0}
       run: conda install -c conda-forge binaryen
-      
+
     - uses: actions-rs/cargo@v1
       with:
         use-cross: true
         command: build
-        args: --target armv7-unknown-linux-gnueabihf
+        args: --target wasm32-unknown-unknown --all-features
+
+    # TODO: add wasm-bindgen and wasm-opt invokations
 
