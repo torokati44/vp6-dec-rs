@@ -263,7 +263,7 @@
 //#define HAVE_LRINT 0
 //#define HAVE_LRINTF 0
 #define HAVE_POWF 1
-#define HAVE_RINT 1
+//#define HAVE_RINT 1
 #define HAVE_ROUND 1
 #define HAVE_ROUNDF 1
 #define HAVE_SINF 1

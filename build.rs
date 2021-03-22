@@ -121,7 +121,8 @@ fn main() {
                     .define("HAVE_LLRINT", "0")
                     .define("HAVE_LLRINTF", "0")
                     .define("HAVE_LRINT", "0")
-                    .define("HAVE_LRINTF", "0");
+                    .define("HAVE_LRINTF", "0")
+                    .define("HAVE_RINT", "0");
             } else {
                 // mostly relying on the system libc
                 build
@@ -135,7 +136,8 @@ fn main() {
                     .define("HAVE_LLRINT", "1")
                     .define("HAVE_LLRINTF", "1")
                     .define("HAVE_LRINT", "1")
-                    .define("HAVE_LRINTF", "1");
+                    .define("HAVE_LRINTF", "1")
+                    .define("HAVE_RINT", "1");
 
                 if target == "x86_64-pc-windows-msvc" {
                     build
