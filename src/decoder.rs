@@ -2,23 +2,23 @@ use std::ptr::slice_from_raw_parts_mut;
 
 use crate::bindings::*;
 
-pub struct VP6State {
-    context: *mut AVCodecContext,
-    packet: *mut AVPacket,
-    yuv_frame: *mut AVFrame,
+pub struct Vp6State {
+    context: *mut AvCodecContext,
+    packet: *mut AvPacket,
+    yuv_frame: *mut AvFrame,
     sws_context: *mut SwsContext,
 }
 
-impl VP6State {
+impl Vp6State {
     pub fn new(with_alpha: bool) -> Self {
         unsafe {
-            let codec: *mut AVCodec = find_vp6_decoder(if with_alpha { 1 } else { 0 });
-            let context: *mut AVCodecContext = avcodec_alloc_context3(codec);
+            let codec: *mut AvCodec = find_vp6_decoder(if with_alpha { 1 } else { 0 });
+            let context: *mut AvCodecContext = avcodec_alloc_context3(codec);
 
-            avcodec_open2(context, codec, std::ptr::null_mut::<*mut AVDictionary>());
+            avcodec_open2(context, codec, std::ptr::null_mut::<*mut AvDictionary>());
 
-            let packet: *mut AVPacket = av_packet_alloc();
-            let yuv_frame: *mut AVFrame = av_frame_alloc();
+            let packet: *mut AvPacket = av_packet_alloc();
+            let yuv_frame: *mut AvFrame = av_frame_alloc();
 
             Self {
                 context,
@@ -57,7 +57,7 @@ impl VP6State {
     }
 }
 
-impl Drop for VP6State {
+impl Drop for Vp6State {
     fn drop(&mut self) {
         unsafe {
             sws_freeContext(self.sws_context);
