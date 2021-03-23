@@ -45,15 +45,14 @@ jobs:
         echo "C:\msys64\mingw64\bin" >> $GITHUB_PATH
 
         cmd.exe /C 'call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && set VCToolsInstallDir > vctoolsinstalldir.txt'
-        cat vctoolsinstalldir.txt
-        export "$(head -n 1 vctoolsinstalldir.txt)"
+        cmd.exe /C 'call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && set LIB > LIB.txt'
+        cmd.exe /C 'call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && set LIBPATH > LIBPATH.txt'
+
+        export "$(head -n 1 vctoolsinstalldir.txt)" # to trim the trailing newline
+        export "$(head -n 1 LIB.txt)" # to trim the trailing newline
+        export "$(head -n 1 LIBPATH.txt)" # to trim the trailing newline
         echo "$VCToolsInstallDir"'\bin\' >> $GITHUB_PATH
         echo "$VCToolsInstallDir"'\bin\Hostx64\x64\' >> $GITHUB_PATH
-        ls "$VCToolsInstallDir"
-        ls "$VCToolsInstallDir"'\bin'
-        ls "$VCToolsInstallDir"'\bin\Hostx64'
-        ls "$VCToolsInstallDir"'\bin\Hostx64\x64'
-        echo "$PATH"
 
     - name: Run tests
       uses: actions-rs/cargo@v1
