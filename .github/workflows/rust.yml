@@ -39,9 +39,11 @@ jobs:
         components: rustfmt, clippy
         target: wasm32-unknown-unknown
 
-    - name: Add msys to PATH for clang
+    - name: Add msys and VS to PATH for clang
       if: matrix.os == 'windows-latest'
-      run: echo "C:\msys64\mingw64\bin" >> $GITHUB_PATH
+      run: |
+        echo "C:\msys64\mingw64\bin" >> $GITHUB_PATH
+        echo "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\bin\x86_amd64" >> $GITHUB_PATH
 
     - name: Run tests
       uses: actions-rs/cargo@v1
