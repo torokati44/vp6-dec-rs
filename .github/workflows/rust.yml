@@ -44,13 +44,10 @@ jobs:
       run: |
         echo "C:\msys64\mingw64\bin" >> $GITHUB_PATH
 
-        "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -products "Microsoft.VisualStudio.Product.BuildTools" -latest -property installationPath
-        "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -products "*" -property installationPath
-        "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -products "*"
         cmd.exe /C 'call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && set VCToolsInstallDir > vctoolsinstalldir.txt'
         cat vctoolsinstalldir.txt
-        export "$(cat vctoolsinstalldir.txt)"
-        echo "$VCToolsInstallDir" >> $GITHUB_PATH
+        export "$(head -n 1 vctoolsinstalldir.txt)"
+        echo "$VCToolsInstallDir"\bin\Hostx64\x64 >> $GITHUB_PATH
 
     - name: Run tests
       uses: actions-rs/cargo@v1
