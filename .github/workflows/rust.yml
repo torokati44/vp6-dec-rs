@@ -43,7 +43,10 @@ jobs:
       if: matrix.os == 'windows-latest'
       run: |
         echo "C:\msys64\mingw64\bin" >> $GITHUB_PATH
-        echo "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\bin\x86_amd64" >> $GITHUB_PATH
+        cmd.exe /C 'call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat" && set VCToolsInstallDir > vctoolsinstalldir.txt'
+        cat vctoolsinstalldir.txt
+        export "$(cat vctoolsinstalldir.txt)"
+        echo "$VCToolsInstallDir" >> $GITHUB_PATH
 
     - name: Run tests
       uses: actions-rs/cargo@v1
