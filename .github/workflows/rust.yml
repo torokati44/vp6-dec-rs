@@ -48,6 +48,11 @@ jobs:
         cat vctoolsinstalldir.txt
         export "$(head -n 1 vctoolsinstalldir.txt)"
         echo "$VCToolsInstallDir"\bin\Hostx64\x64 >> $GITHUB_PATH
+        ls "$VCToolsInstallDir"
+        ls "$VCToolsInstallDir"\bin
+        ls "$VCToolsInstallDir"\bin\Hostx64
+        ls "$VCToolsInstallDir"\bin\Hostx64\x64
+        echo "$PATH"
 
     - name: Run tests
       uses: actions-rs/cargo@v1
