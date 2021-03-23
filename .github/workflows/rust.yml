@@ -22,6 +22,8 @@ jobs:
       matrix:
         rust_version: ['stable', 'beta', 'nightly']
         os: [ubuntu-latest, windows-latest, macOS-latest]
+    env:
+      VCINSTALLDIR: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\'
 
     steps:
     - uses: actions/checkout@v2
