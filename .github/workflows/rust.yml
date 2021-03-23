@@ -50,6 +50,7 @@ jobs:
         cmd.exe /C 'call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && set WindowsLibPath > WindowsLibPath.txt'
         cmd.exe /C 'call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && set WindowsSdkBinPath > WindowsSdkBinPath.txt'
         cmd.exe /C 'call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && set WindowsSdkDir > WindowsSdkDir.txt'
+        cmd.exe /C 'call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && set UniversalCRTSdkDir > UniversalCRTSdkDir.txt'
 
         export "$(head -n 1 vctoolsinstalldir.txt)" # to trim the trailing newline
         export "$(head -n 1 LIB.txt)" # to trim the trailing newline
@@ -57,6 +58,7 @@ jobs:
         export "$(head -n 1 WindowsLibPath.txt)" # to trim the trailing newline
         export "$(head -n 1 WindowsSdkBinPath.txt)" # to trim the trailing newline
         export "$(head -n 1 WindowsSdkDir.txt)" # to trim the trailing newline
+        export "$(head -n 1 UniversalCRTSdkDir.txt)" # to trim the trailing newline
 
         echo "$VCToolsInstallDir"'\bin\' >> $GITHUB_PATH
         echo "$VCToolsInstallDir"'\bin\Hostx64\x64\' >> $GITHUB_PATH
