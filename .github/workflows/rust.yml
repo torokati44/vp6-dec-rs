@@ -13,7 +13,7 @@ jobs:
   build:
     defaults:
       run:
-        shell: bash -l {0}
+        shell: cmd /C call {0}
     name: Test Rust ${{ matrix.rust_version }} / ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.rust_version == 'nightly' }}
@@ -39,29 +39,10 @@ jobs:
         components: rustfmt, clippy
         target: wasm32-unknown-unknown
 
-    - name: Add msys and VS to PATH for clang
+    - name: Add msys to PATH for clang
       if: matrix.os == 'windows-latest'
       run: |
         echo "C:\msys64\mingw64\bin" >> $GITHUB_PATH
-
-        cmd.exe /C 'call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && set VCToolsInstallDir > vctoolsinstalldir.txt'
-        cmd.exe /C 'call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && set LIB > LIB.txt'
-        cmd.exe /C 'call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && set LIBPATH > LIBPATH.txt'
-        cmd.exe /C 'call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && set WindowsLibPath > WindowsLibPath.txt'
-        cmd.exe /C 'call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && set WindowsSdkBinPath > WindowsSdkBinPath.txt'
-        cmd.exe /C 'call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && set WindowsSdkDir > WindowsSdkDir.txt'
-        cmd.exe /C 'call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && set UniversalCRTSdkDir > UniversalCRTSdkDir.txt'
-
-        export "$(head -n 1 vctoolsinstalldir.txt)" # to trim the trailing newline
-        export "$(head -n 1 LIB.txt)" # to trim the trailing newline
-        export "$(head -n 1 LIBPATH.txt)" # to trim the trailing newline
-        export "$(head -n 1 WindowsLibPath.txt)" # to trim the trailing newline
-        export "$(head -n 1 WindowsSdkBinPath.txt)" # to trim the trailing newline
-        export "$(head -n 1 WindowsSdkDir.txt)" # to trim the trailing newline
-        export "$(head -n 1 UniversalCRTSdkDir.txt)" # to trim the trailing newline
-
-        echo "$VCToolsInstallDir"'\bin\' >> $GITHUB_PATH
-        echo "$VCToolsInstallDir"'\bin\Hostx64\x64\' >> $GITHUB_PATH
 
     - name: Run tests
       uses: actions-rs/cargo@v1
@@ -91,10 +72,7 @@ jobs:
       with:
         activate-environment: binaryen
 
-    # conda is available only with "shell: bash -l {0}".
-    # See https://github.com/marketplace/actions/setup-miniconda.
     - name: Install binaryen
-      shell: bash -l {0}
       run: conda install -c conda-forge binaryen
 
     - uses: actions-rs/cargo@v1
