@@ -151,7 +151,7 @@ fn main() {
             }
 
             build
-                .compiler("clang")
+                //.compiler("clang")
                 .define("HAVE_AV_CONFIG_H", None)
                 .includes(&["extern/config", "extern/ffmpeg/"])
                 .warnings(false)
