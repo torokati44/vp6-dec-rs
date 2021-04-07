@@ -1,5 +1,7 @@
 extern crate cc;
 extern crate pkg_config;
+use autotools;
+use autotools::Config;
 
 fn main() {
     // Minimum versions according to:
@@ -31,6 +33,14 @@ fn main() {
             // linking is already taken care of by `pkg_config`
         }
         _ => {
+
+
+            let dst = Config::new("extern/ffmpeg")
+            .enable_static()
+            .disable_shared()
+            .build();
+
+
             // Resorting to building the VP6 decoder statically,
             // from the FFmpeg sources in the git submodule.
             if !cfg!(feature = "allow-lgpl") {
