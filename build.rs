@@ -154,6 +154,7 @@ fn main() {
                 //.compiler("clang")
                 .define("HAVE_AV_CONFIG_H", None)
                 .includes(&["extern/config", "extern/ffmpeg/"])
+                .include("extern/ffmpeg/compat/atomics/win32/stdatomic.h")
                 .warnings(false)
                 .extra_warnings(false)
                 //.flag("-Wno-switch")
