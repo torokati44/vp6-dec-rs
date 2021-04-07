@@ -156,7 +156,7 @@ fn main() {
                 .includes(&["extern/config", "extern/ffmpeg/"])
                 .warnings(false)
                 .extra_warnings(false)
-                .flag("-Wno-switch")
+                //.flag("-Wno-switch")
                 /*
                 .flag("-Wno-attributes")
                 .flag("-Wno-ignored-qualifiers")
