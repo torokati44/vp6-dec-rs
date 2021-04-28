@@ -7,6 +7,7 @@
 #include "libavutil/common.h"
 #include "libavcodec/avcodec.h"
 #include "libswscale/swscale.h"
+#include <stdio.h>
 
 AVCodec *find_vp6_decoder(int with_alpha) {
     return avcodec_find_decoder(with_alpha ? AV_CODEC_ID_VP6A : AV_CODEC_ID_VP6F);
@@ -26,6 +27,8 @@ unsigned char *packet_data(AVPacket *p) {
 }
 
 int frame_width(AVFrame *f) {
+    printf("%ld, %ld, %ld, %ld\n", f->crop_top, f->crop_bottom, f->crop_left, f->crop_right);
+
     return f->width;
 }
 int frame_height(AVFrame *f) {
