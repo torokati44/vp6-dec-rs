@@ -13,6 +13,21 @@ AVCodec *find_vp6_decoder(int with_alpha) {
     return avcodec_find_decoder(with_alpha ? AV_CODEC_ID_VP6A : AV_CODEC_ID_VP6F);
 }
 
+void set_avcontext_extradata(AVCodecContext *ctx, unsigned char byte) {
+    if (ctx->extradata_size < 1 + AV_INPUT_BUFFER_PADDING_SIZE) {
+        av_free(ctx->extradata);
+        ctx->extradata_size = 1;
+        ctx->extradata = av_malloc(1 + AV_INPUT_BUFFER_PADDING_SIZE);
+    }
+    ctx->extradata[0] = byte;
+}
+
+void free_avcontext_extradata(AVCodecContext *ctx) {
+    av_free(ctx->extradata);
+    ctx->extradata_size = 0;
+    ctx->extradata = NULL;
+}
+
 void packet_set_size(AVPacket *p, int size) {
     if (p->size < size) {
         av_grow_packet(p, size - p->size);
@@ -27,8 +42,6 @@ unsigned char *packet_data(AVPacket *p) {
 }
 
 int frame_width(AVFrame *f) {
-    printf("%ld, %ld, %ld, %ld\n", f->crop_top, f->crop_bottom, f->crop_left, f->crop_right);
-
     return f->width;
 }
 int frame_height(AVFrame *f) {
@@ -48,7 +61,10 @@ SwsContext *make_converter_context(AVFrame *yuv_frame) {
 }
 
 void convert_yuv_to_rgba(SwsContext *context, AVFrame *yuv_frame, uint8_t *rgba_data) {
+    // THERE HAS TO BE A TEMPORARY RGBA FRAME WITH A LINESIZE THATS A MULTIPLE OF ABOUT 32 OTHERWISE
+    // THERE WILL BE A BLANK COLUMN ON THE RIGHT
     int linesize = yuv_frame->width * 4;
+    printf("yuf linesize[0], %d, yuv width %d\n", yuv_frame->linesize[0], yuv_frame->width);
     sws_scale(context, yuv_frame->data, yuv_frame->linesize, 0,
         yuv_frame->height, &rgba_data, &linesize);
 }

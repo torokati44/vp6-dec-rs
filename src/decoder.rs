@@ -7,10 +7,11 @@ pub struct Vp6State {
     packet: *mut AvPacket,
     yuv_frame: *mut AvFrame,
     sws_context: *mut SwsContext,
+    pub bounds: (u16, u16)
 }
 
 impl Vp6State {
-    pub fn new(with_alpha: bool) -> Self {
+    pub fn new(with_alpha: bool, bounds: (u16, u16)) -> Self {
         unsafe {
             let codec: *mut AvCodec = find_vp6_decoder(if with_alpha { 1 } else { 0 });
             let context: *mut AvCodecContext = avcodec_alloc_context3(codec);
@@ -25,7 +26,16 @@ impl Vp6State {
                 packet,
                 yuv_frame,
                 sws_context: std::ptr::null_mut(),
+                bounds
             }
+        }
+    }
+
+    // both values should be between -15 and 0, inclusive
+    pub fn set_adjustment(&mut self, dw: i8, dh: i8) {
+        unsafe {
+            let byte : u8 = (((-dw) as u8) << 4) | (((-dh) as u8) & 0x0F);
+            set_avcontext_extradata(self.context, byte);
         }
     }
 
@@ -50,6 +60,7 @@ impl Vp6State {
             let h = frame_height(self.yuv_frame) as usize;
             let num_pixels = w * h;
             let mut rgba_data = vec![0; num_pixels * 4];
+
             convert_yuv_to_rgba(self.sws_context, self.yuv_frame, rgba_data.as_mut_ptr());
 
             (rgba_data, (w, h))
@@ -63,6 +74,7 @@ impl Drop for Vp6State {
             sws_freeContext(self.sws_context);
             av_frame_free(&mut self.yuv_frame);
             av_packet_free(&mut self.packet);
+            free_avcontext_extradata(self.context);
             avcodec_free_context(&mut self.context);
         }
     }
