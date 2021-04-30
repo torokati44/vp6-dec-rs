@@ -126,7 +126,8 @@ fn main() {
                     .define("HAVE_LLRINTF", "0")
                     .define("HAVE_LRINT", "0")
                     .define("HAVE_LRINTF", "0")
-                    .define("HAVE_RINT", "0");
+                    .define("HAVE_RINT", "0")
+                    .define("HAVE_STRERROR_R", "1");
             } else {
                 // mostly relying on the system libc
                 build
@@ -146,11 +147,13 @@ fn main() {
                 if target == "x86_64-pc-windows-msvc" {
                     build
                         .define("HAVE_LIBC_MSVCRT", "1")
-                        .define("HAVE_UNISTD_H", "0");
+                        .define("HAVE_UNISTD_H", "0")
+                        .define("HAVE_STRERROR_R", "0");
                 } else {
                     build
                         .define("HAVE_LIBC_MSVCRT", "0")
-                        .define("HAVE_UNISTD_H", "1");
+                        .define("HAVE_UNISTD_H", "1")
+                        .define("HAVE_STRERROR_R", "1");
                 }
             }
 
