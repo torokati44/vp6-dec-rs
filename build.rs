@@ -146,11 +146,13 @@ fn main() {
                 if target == "x86_64-pc-windows-msvc" {
                     build
                         .define("HAVE_LIBC_MSVCRT", "1")
-                        .define("HAVE_UNISTD_H", "0");
+                        .define("HAVE_UNISTD_H", "0")
+                        .define("HAVE_STRERROR_R", "0");
                 } else {
                     build
                         .define("HAVE_LIBC_MSVCRT", "0")
-                        .define("HAVE_UNISTD_H", "1");
+                        .define("HAVE_UNISTD_H", "1")
+                        .define("HAVE_STRERROR_R", "1");
                 }
             }
 
@@ -161,13 +163,12 @@ fn main() {
                 .warnings(false)
                 .extra_warnings(false)
                 .flag("-Wno-switch")
-                /*
+                .flag("-Wno-pointer-sign")
                 .flag("-Wno-attributes")
                 .flag("-Wno-ignored-qualifiers")
                 .flag("-Wno-deprecated-declarations")
                 .flag("-Wno-parentheses")
                 .flag("-Wno-implicit-const-int-float-conversion")
-                */
                 ;
         }
     }
