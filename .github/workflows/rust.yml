@@ -40,20 +40,26 @@ jobs:
       shell: cmd /C call {0}
       run: echo "C:\msys64\mingw64\bin" >> $GITHUB_PATH
 
-    - name: run win build script
+    - name: Run tests (win)
       if: matrix.os == 'windows-latest'
       shell: cmd /C call {0}
       run: |
         call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
         cargo test --all-features
 
+    - name: Run tests (unwin)
+      if: matrix.os != 'windows-latest'
+      run: cargo test --all-features
+
     - name: Check clippy
+      if: matrix.os != 'windows-latest'
       uses: actions-rs/cargo@v1
       with:
         command: clippy
         args: --all --all-features --tests -- -D warnings
 
     - name: Check formatting
+      if: matrix.os != 'windows-latest'
       uses: actions-rs/cargo@v1
       with:
         command: fmt
