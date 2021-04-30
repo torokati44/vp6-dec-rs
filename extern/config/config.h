@@ -321,7 +321,7 @@
 #define HAVE_SETMODE 0
 #define HAVE_SETRLIMIT 0
 #define HAVE_SLEEP 0
-#define HAVE_STRERROR_R 1
+#define HAVE_STRERROR_R 0
 #define HAVE_SYSCONF 0
 #define HAVE_SYSCTL 0
 #define HAVE_USLEEP 0
