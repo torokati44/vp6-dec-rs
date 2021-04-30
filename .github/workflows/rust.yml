@@ -12,6 +12,10 @@ env:
 
 jobs:
   build:
+    defaults:
+      run:
+        shell: cmd /C call {0}
+
     name: Test Rust ${{ matrix.rust_version }} / ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.rust_version == 'nightly' }}
