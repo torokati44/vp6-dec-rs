@@ -126,7 +126,8 @@ fn main() {
                     .define("HAVE_LLRINTF", "0")
                     .define("HAVE_LRINT", "0")
                     .define("HAVE_LRINTF", "0")
-                    .define("HAVE_RINT", "0");
+                    .define("HAVE_RINT", "0")
+                    .define("HAVE_STRERROR_R", "1");
             } else {
                 // mostly relying on the system libc
                 build
