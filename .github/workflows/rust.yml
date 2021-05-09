@@ -55,12 +55,14 @@ jobs:
         cargo test --all-features
 
     - name: Check clippy
+      if: matrix.os != 'windows-latest'
       uses: actions-rs/cargo@v1
       with:
         command: clippy
         args: --all --all-features --tests -- -D warnings
 
     - name: Check formatting
+      if: matrix.os != 'windows-latest'
       uses: actions-rs/cargo@v1
       with:
         command: fmt
