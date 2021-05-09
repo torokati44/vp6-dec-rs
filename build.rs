@@ -168,8 +168,7 @@ fn main() {
                 .flag("-Wno-ignored-qualifiers")
                 .flag("-Wno-deprecated-declarations")
                 .flag("-Wno-parentheses")
-                .flag("-Wno-implicit-const-int-float-conversion")
-                ;
+                .flag("-Wno-implicit-const-int-float-conversion");
         }
     }
 
