@@ -36,15 +36,23 @@ jobs:
         components: rustfmt, clippy
         target: wasm32-unknown-unknown
 
-    - name: Add msys to PATH for clang
-      if: matrix.os == 'windows-latest'
-      run: echo "C:\msys64\mingw64\bin" >> $GITHUB_PATH
-
     - name: Run tests
+      if: matrix.os != 'windows-latest'
       uses: actions-rs/cargo@v1
       with:
         command: test
         args: --all-features
+
+    - name: Add msys to PATH for clang
+      if: matrix.os == 'windows-latest'
+      run: echo "C:\msys64\mingw64\bin" >> $GITHUB_PATH
+
+    - name: run tests (win)
+      if: matrix.os == 'windows-latest'
+      shell: cmd /C call {0}
+      run: |
+        call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+        cargo test --all-features
 
     - name: Check clippy
       uses: actions-rs/cargo@v1
