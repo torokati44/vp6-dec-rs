@@ -32,6 +32,10 @@ jobs:
       with:
         submodules: recursive
 
+    - name: is it there?
+      if: matrix.os == 'macOS-latest'
+      run: ls "$(brew --prefix llvm)/bin/"
+
     - name: Install Rust toolchain
       uses: actions-rs/toolchain@v1
       with:
