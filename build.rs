@@ -164,14 +164,11 @@ fn main() {
                 .warnings(false)
                 .extra_warnings(false)
                 .flag("-Wno-switch")
-                /*
                 .flag("-Wno-attributes")
                 .flag("-Wno-ignored-qualifiers")
                 .flag("-Wno-deprecated-declarations")
                 .flag("-Wno-parentheses")
-                .flag("-Wno-implicit-const-int-float-conversion")
-                */
-                ;
+                .flag("-Wno-implicit-int-float-conversion");
         }
     }
 
