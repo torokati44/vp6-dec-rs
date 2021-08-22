@@ -71,10 +71,10 @@ jobs:
       shell: bash -l {0}
       run: conda install -c conda-forge binaryen
 
-    - name: Install clang
+    - name: Install clang and binutils
       if: matrix.os == 'macOS-latest'
       shell: bash -l {0}
-      run: conda install -c conda-forge clang
+      run: conda install -c conda-forge clang binutils
 
     - name: Native build
       uses: actions-rs/cargo@v1
