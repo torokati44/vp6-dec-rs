@@ -1,6 +1,6 @@
 The files in this folder are a barebones fraction of a libc.
 Just enough present in every header to make the included parts
-of libav compile and work for what we need it. Some functions
+of FFmpeg compile and work for what we need it. Some functions
 are actually just stubs, but those were deemed not necessary.
 All of this is only necessary when compiling to WASM, because
 on Desktop targets, we rely on the complete libc available on
