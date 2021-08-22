@@ -39,78 +39,6 @@ fn main() {
                     "Or enable the feature `allow-lgpl`."), LIBAVUTIL_MIN, LIBAVCODEC_MIN, LIBSWSCALE_MIN);
             }
 
-            build.files(&[
-                "extern/ffmpeg/libavcodec/allcodecs.c",
-                "extern/ffmpeg/libavcodec/avpacket.c",
-                "extern/ffmpeg/libavcodec/bitstream_filters.c",
-                "extern/ffmpeg/libavcodec/bitstream.c",
-                "extern/ffmpeg/libavcodec/bsf.c",
-                "extern/ffmpeg/libavcodec/codec_desc.c",
-                "extern/ffmpeg/libavcodec/encode.c",
-                "extern/ffmpeg/libavcodec/decode.c",
-                "extern/ffmpeg/libavcodec/avcodec.c",
-                "extern/ffmpeg/libavcodec/codec_par.c",
-                "extern/ffmpeg/libavcodec/h264chroma.c",
-                "extern/ffmpeg/libavcodec/hpeldsp.c",
-                "extern/ffmpeg/libavcodec/huffman.c",
-                "extern/ffmpeg/libavcodec/mathtables.c",
-                "extern/ffmpeg/libavcodec/me_cmp.c",
-                "extern/ffmpeg/libavcodec/null_bsf.c",
-                "extern/ffmpeg/libavcodec/options.c",
-                "extern/ffmpeg/libavcodec/profiles.c",
-                "extern/ffmpeg/libavcodec/simple_idct.c",
-                "extern/ffmpeg/libavcodec/utils.c",
-                "extern/ffmpeg/libavcodec/videodsp.c",
-                "extern/ffmpeg/libavcodec/vp3dsp.c",
-                "extern/ffmpeg/libavcodec/vp56.c",
-                "extern/ffmpeg/libavcodec/vp56data.c",
-                "extern/ffmpeg/libavcodec/vp56dsp.c",
-                "extern/ffmpeg/libavcodec/vp56rac.c",
-                "extern/ffmpeg/libavcodec/vp6.c",
-                "extern/ffmpeg/libavcodec/vp6dsp.c",
-                "extern/ffmpeg/libavutil/avstring.c",
-                "extern/ffmpeg/libavutil/bprint.c",
-                "extern/ffmpeg/libavutil/buffer.c",
-                "extern/ffmpeg/libavutil/channel_layout.c",
-                "extern/ffmpeg/libavutil/cpu.c",
-                "extern/ffmpeg/libavutil/dict.c",
-                "extern/ffmpeg/libavutil/error.c",
-                "extern/ffmpeg/libavutil/utils.c",
-                "extern/ffmpeg/libavutil/eval.c",
-                "extern/ffmpeg/libavutil/fifo.c",
-                "extern/ffmpeg/libavutil/frame.c",
-                "extern/ffmpeg/libavutil/hwcontext.c",
-                "extern/ffmpeg/libavutil/imgutils.c",
-                "extern/ffmpeg/libavutil/intmath.c",
-                "extern/ffmpeg/libavutil/log.c",
-                "extern/ffmpeg/libavutil/log2_tab.c",
-                "extern/ffmpeg/libavutil/mathematics.c",
-                "extern/ffmpeg/libavutil/mem.c",
-                "extern/ffmpeg/libavutil/opt.c",
-                "extern/ffmpeg/libavutil/parseutils.c",
-                "extern/ffmpeg/libavutil/pixdesc.c",
-                "extern/ffmpeg/libavutil/random_seed.c",
-                "extern/ffmpeg/libavutil/rational.c",
-                "extern/ffmpeg/libavutil/reverse.c",
-                "extern/ffmpeg/libavutil/samplefmt.c",
-                "extern/ffmpeg/libavutil/sha.c",
-                "extern/ffmpeg/libavutil/time.c",
-                "extern/ffmpeg/libswscale/alphablend.c",
-                "extern/ffmpeg/libswscale/gamma.c",
-                "extern/ffmpeg/libswscale/hscale_fast_bilinear.c",
-                "extern/ffmpeg/libswscale/hscale.c",
-                "extern/ffmpeg/libswscale/input.c",
-                "extern/ffmpeg/libswscale/options.c",
-                "extern/ffmpeg/libswscale/output.c",
-                "extern/ffmpeg/libswscale/rgb2rgb.c",
-                "extern/ffmpeg/libswscale/slice.c",
-                "extern/ffmpeg/libswscale/swscale_unscaled.c",
-                "extern/ffmpeg/libswscale/swscale.c",
-                "extern/ffmpeg/libswscale/utils.c",
-                "extern/ffmpeg/libswscale/vscale.c",
-                "extern/ffmpeg/libswscale/yuv2rgb.c",
-            ]);
-
             let target = std::env::var("TARGET").unwrap();
             if target == "wasm32-unknown-unknown" {
                 // relying on our fake libc fragment
@@ -169,8 +97,95 @@ fn main() {
                 .flag("-Wno-deprecated-declarations")
                 .flag("-Wno-parentheses")
                 .flag("-Wno-implicit-int-float-conversion");
+
+            let mut avcodec = build.clone();
+            avcodec
+                .files(&[
+                    "extern/ffmpeg/libavcodec/allcodecs.c",
+                    "extern/ffmpeg/libavcodec/avpacket.c",
+                    "extern/ffmpeg/libavcodec/bitstream_filters.c",
+                    "extern/ffmpeg/libavcodec/bitstream.c",
+                    "extern/ffmpeg/libavcodec/bsf.c",
+                    "extern/ffmpeg/libavcodec/codec_desc.c",
+                    "extern/ffmpeg/libavcodec/encode.c",
+                    "extern/ffmpeg/libavcodec/decode.c",
+                    "extern/ffmpeg/libavcodec/avcodec.c",
+                    "extern/ffmpeg/libavcodec/codec_par.c",
+                    "extern/ffmpeg/libavcodec/h264chroma.c",
+                    "extern/ffmpeg/libavcodec/hpeldsp.c",
+                    "extern/ffmpeg/libavcodec/huffman.c",
+                    "extern/ffmpeg/libavcodec/mathtables.c",
+                    "extern/ffmpeg/libavcodec/me_cmp.c",
+                    "extern/ffmpeg/libavcodec/null_bsf.c",
+                    "extern/ffmpeg/libavcodec/options.c",
+                    "extern/ffmpeg/libavcodec/profiles.c",
+                    "extern/ffmpeg/libavcodec/simple_idct.c",
+                    "extern/ffmpeg/libavcodec/utils.c",
+                    "extern/ffmpeg/libavcodec/videodsp.c",
+                    "extern/ffmpeg/libavcodec/vp3dsp.c",
+                    "extern/ffmpeg/libavcodec/vp56.c",
+                    "extern/ffmpeg/libavcodec/vp56data.c",
+                    "extern/ffmpeg/libavcodec/vp56dsp.c",
+                    "extern/ffmpeg/libavcodec/vp56rac.c",
+                    "extern/ffmpeg/libavcodec/vp6.c",
+                    "extern/ffmpeg/libavcodec/vp6dsp.c",
+                ])
+                .compile("avcodec");
+
+            let mut avutil = build.clone();
+            avutil
+                .files(&[
+                    "extern/ffmpeg/libavutil/avstring.c",
+                    "extern/ffmpeg/libavutil/bprint.c",
+                    "extern/ffmpeg/libavutil/buffer.c",
+                    "extern/ffmpeg/libavutil/channel_layout.c",
+                    "extern/ffmpeg/libavutil/cpu.c",
+                    "extern/ffmpeg/libavutil/dict.c",
+                    "extern/ffmpeg/libavutil/error.c",
+                    "extern/ffmpeg/libavutil/utils.c",
+                    "extern/ffmpeg/libavutil/eval.c",
+                    "extern/ffmpeg/libavutil/fifo.c",
+                    "extern/ffmpeg/libavutil/frame.c",
+                    "extern/ffmpeg/libavutil/hwcontext.c",
+                    "extern/ffmpeg/libavutil/imgutils.c",
+                    "extern/ffmpeg/libavutil/intmath.c",
+                    "extern/ffmpeg/libavutil/log.c",
+                    "extern/ffmpeg/libavutil/log2_tab.c",
+                    "extern/ffmpeg/libavutil/mathematics.c",
+                    "extern/ffmpeg/libavutil/mem.c",
+                    "extern/ffmpeg/libavutil/opt.c",
+                    "extern/ffmpeg/libavutil/parseutils.c",
+                    "extern/ffmpeg/libavutil/pixdesc.c",
+                    "extern/ffmpeg/libavutil/random_seed.c",
+                    "extern/ffmpeg/libavutil/rational.c",
+                    "extern/ffmpeg/libavutil/reverse.c",
+                    "extern/ffmpeg/libavutil/samplefmt.c",
+                    "extern/ffmpeg/libavutil/sha.c",
+                    "extern/ffmpeg/libavutil/time.c",
+                ])
+                .compile("avutil");
+
+            let mut swscale = build.clone();
+            swscale
+                .files(&[
+                    "extern/ffmpeg/libswscale/alphablend.c",
+                    "extern/ffmpeg/libswscale/gamma.c",
+                    "extern/ffmpeg/libswscale/hscale_fast_bilinear.c",
+                    "extern/ffmpeg/libswscale/hscale.c",
+                    "extern/ffmpeg/libswscale/input.c",
+                    "extern/ffmpeg/libswscale/options.c",
+                    "extern/ffmpeg/libswscale/output.c",
+                    "extern/ffmpeg/libswscale/rgb2rgb.c",
+                    "extern/ffmpeg/libswscale/slice.c",
+                    "extern/ffmpeg/libswscale/swscale_unscaled.c",
+                    "extern/ffmpeg/libswscale/swscale.c",
+                    "extern/ffmpeg/libswscale/utils.c",
+                    "extern/ffmpeg/libswscale/vscale.c",
+                    "extern/ffmpeg/libswscale/yuv2rgb.c",
+                ])
+                .compile("swscale")
         }
     }
 
-    build.file("src/helpers.c").compile("vp6");
+    build.file("src/helpers.c").compile("helpers");
 }
