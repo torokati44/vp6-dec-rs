@@ -12,9 +12,6 @@ env:
 
 jobs:
   build:
-    defaults:
-      run:
-        shell: bash -l {0}
     name: Test Rust ${{ matrix.rust_version }} / ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.rust_version == 'nightly' }}
@@ -40,6 +37,7 @@ jobs:
 
     - name: Add msys to PATH for clang
       if: matrix.os == 'windows-latest'
+      shell: bash -l {0}
       run: echo "C:\msys64\mingw64\bin" >> $GITHUB_PATH
 
     - name: Setup Developer Command Prompt
@@ -80,11 +78,8 @@ jobs:
         args: --all-features
 
     - name: Web build
-      uses: actions-rs/cargo@v1
-      with:
-        use-cross: true
-        command: build
-        args: --target wasm32-unknown-unknown --all-features
+      shell: bash -l {0}
+      run: cargo build --target wasm32-unknown-unknown --all-features
 
     - name: Run tests
       uses: actions-rs/cargo@v1
