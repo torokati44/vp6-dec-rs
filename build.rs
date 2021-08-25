@@ -96,6 +96,7 @@ fn main() {
                 .flag("-Wno-ignored-qualifiers")
                 .flag("-Wno-deprecated-declarations")
                 .flag("-Wno-parentheses")
+                .flag("-Wno-pointer-sign")
                 .flag("-Wno-implicit-int-float-conversion");
 
             let mut avcodec = build.clone();
