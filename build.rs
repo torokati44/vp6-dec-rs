@@ -6,7 +6,6 @@ fn main() {
     // https://github.com/ruffle-rs/ruffle/pull/3004#issuecomment-781735152
     const LIBAVUTIL_MIN: &str = "55.0.100";
     const LIBAVCODEC_MIN: &str = "57.0.100";
-    const LIBSWSCALE_MIN: &str = "4.1.100";
 
     let avutil = pkg_config::Config::new()
         .atleast_version(LIBAVUTIL_MIN)
@@ -14,20 +13,16 @@ fn main() {
     let avcodec = pkg_config::Config::new()
         .atleast_version(LIBAVCODEC_MIN)
         .probe("libavcodec");
-    let swscale = pkg_config::Config::new()
-        .atleast_version(LIBSWSCALE_MIN)
-        .probe("libswscale");
 
     let mut build = cc::Build::new();
 
-    match (avutil, avcodec, swscale) {
-        (Ok(avutil), Ok(avcodec), Ok(swscale)) => {
+    match (avutil, avcodec) {
+        (Ok(avutil), Ok(avcodec)) => {
             // The happy case; All three necessary FFmpeg libraries were found on
             // the system, so the only thing we have to build is a bit of glue.
             build
                 .includes(avutil.include_paths)
-                .includes(avcodec.include_paths)
-                .includes(swscale.include_paths);
+                .includes(avcodec.include_paths);
             // linking is already taken care of by `pkg_config`
         }
         _ => {
@@ -35,8 +30,8 @@ fn main() {
             // from the FFmpeg sources in the git submodule.
             if !cfg!(feature = "allow-lgpl") {
                 panic!(concat!("Required libraries could not be found, and compiling in LGPL code was not allowed.\n",
-                    "Either install libavutil >={:}, libavcodec >={:}, and libswscale >={:};\n",
-                    "Or enable the feature `allow-lgpl`."), LIBAVUTIL_MIN, LIBAVCODEC_MIN, LIBSWSCALE_MIN);
+                    "Either install libavutil >={:} and libavcodec >={:};\n",
+                    "Or enable the feature `allow-lgpl`."), LIBAVUTIL_MIN, LIBAVCODEC_MIN);
             }
 
             let target = std::env::var("TARGET").unwrap();
@@ -165,26 +160,51 @@ fn main() {
                     "extern/ffmpeg/libavutil/time.c",
                 ])
                 .compile("avutil");
+        }
+    }
 
-            let mut swscale = build.clone();
-            swscale
-                .files(&[
-                    "extern/ffmpeg/libswscale/alphablend.c",
-                    "extern/ffmpeg/libswscale/gamma.c",
-                    "extern/ffmpeg/libswscale/hscale_fast_bilinear.c",
-                    "extern/ffmpeg/libswscale/hscale.c",
-                    "extern/ffmpeg/libswscale/input.c",
-                    "extern/ffmpeg/libswscale/options.c",
-                    "extern/ffmpeg/libswscale/output.c",
-                    "extern/ffmpeg/libswscale/rgb2rgb.c",
-                    "extern/ffmpeg/libswscale/slice.c",
-                    "extern/ffmpeg/libswscale/swscale_unscaled.c",
-                    "extern/ffmpeg/libswscale/swscale.c",
-                    "extern/ffmpeg/libswscale/utils.c",
-                    "extern/ffmpeg/libswscale/vscale.c",
-                    "extern/ffmpeg/libswscale/yuv2rgb.c",
-                ])
-                .compile("swscale")
+    if cfg!(feature = "allow-lgpl") {
+        const LIBSWSCALE_MIN: &str = "4.1.100";
+        let swscale = pkg_config::Config::new()
+            .atleast_version(LIBSWSCALE_MIN)
+            .probe("libswscale");
+
+        match swscale {
+            Ok(swscale) => {
+                // The happy case; All three necessary FFmpeg libraries were found on
+                // the system, so the only thing we have to build is a bit of glue.
+                build.includes(swscale.include_paths);
+                // linking is already taken care of by `pkg_config`
+            }
+            _ => {
+                // Resorting to building the VP6 decoder statically,
+                // from the FFmpeg sources in the git submodule.
+                if !cfg!(feature = "allow-lgpl") {
+                    panic!(concat!("Required libraries could not be found, and compiling in LGPL code was not allowed.\n",
+                        "Either install libswscale >={:};\n",
+                        "Or enable the feature `allow-lgpl`."), LIBSWSCALE_MIN);
+                }
+
+                let mut swscale = build.clone();
+                swscale
+                    .files(&[
+                        "extern/ffmpeg/libswscale/alphablend.c",
+                        "extern/ffmpeg/libswscale/gamma.c",
+                        "extern/ffmpeg/libswscale/hscale_fast_bilinear.c",
+                        "extern/ffmpeg/libswscale/hscale.c",
+                        "extern/ffmpeg/libswscale/input.c",
+                        "extern/ffmpeg/libswscale/options.c",
+                        "extern/ffmpeg/libswscale/output.c",
+                        "extern/ffmpeg/libswscale/rgb2rgb.c",
+                        "extern/ffmpeg/libswscale/slice.c",
+                        "extern/ffmpeg/libswscale/swscale_unscaled.c",
+                        "extern/ffmpeg/libswscale/swscale.c",
+                        "extern/ffmpeg/libswscale/utils.c",
+                        "extern/ffmpeg/libswscale/vscale.c",
+                        "extern/ffmpeg/libswscale/yuv2rgb.c",
+                    ])
+                    .compile("swscale")
+            }
         }
     }
 
