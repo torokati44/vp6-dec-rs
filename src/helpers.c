@@ -50,6 +50,12 @@ void convert_yuv_to_rgba(SwsContext *context, AVFrame *yuv_frame, uint8_t *rgba_
         yuv_frame->height, &rgba_data, &linesize);
 }
 
+void get_yuv_frame(AVFrame *yuv_frame, uint8_t *y_data, uint8_t *cb_data, uint8_t *cr_data) {
+    memcpy(y_data, yuv_frame->data[0], yuv_frame->height * yuv_frame->linesize[0]);
+    memcpy(cb_data, yuv_frame->data[1], (yuv_frame->height+1)/2 * yuv_frame->linesize[1]);
+    memcpy(cr_data, yuv_frame->data[2], (yuv_frame->height+1)/2 * yuv_frame->linesize[2]);
+}
+
 // This is actually a stub for the web build, but not at the libc level, so it's here.
 int avpriv_open(const char *filename, int flags, ...) {
     return -1;

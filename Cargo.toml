@@ -10,7 +10,13 @@ allow-lgpl = []
 with-swscale = []
 
 [dependencies]
+# todo: make optional, only if not with-swscale
+h263-rs-yuv = { git = "https://github.com/ruffle-rs/h263-rs", rev = "ce3d3c798190be1c78c47099e76d095756a195ac"}
 
 [build-dependencies]
 cc = "*"
 pkg-config = "*"
+
+
+[profile.dev.package.h263-rs-yuv]
+opt-level = 3

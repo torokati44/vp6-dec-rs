@@ -6,6 +6,7 @@ pub struct Vp6State {
     context: *mut AvCodecContext,
     packet: *mut AvPacket,
     yuv_frame: *mut AvFrame,
+    #[cfg(feature = "with-swscale")]
     sws_context: *mut SwsContext,
 }
 
@@ -24,6 +25,7 @@ impl Vp6State {
                 context,
                 packet,
                 yuv_frame,
+                #[cfg(feature = "with-swscale")]
                 sws_context: std::ptr::null_mut(),
             }
         }
@@ -42,17 +44,36 @@ impl Vp6State {
             let _ret = avcodec_receive_frame(self.context, self.yuv_frame);
             // TODO: check for return values (errors) everywhere, with proper cleanup!
 
+            #[cfg(feature = "with-swscale")]
             if self.sws_context.is_null() {
                 self.sws_context = make_converter_context(self.yuv_frame);
             }
 
             let w = frame_width(self.yuv_frame) as usize;
             let h = frame_height(self.yuv_frame) as usize;
-            let num_pixels = w * h;
-            let mut rgba_data = vec![0; num_pixels * 4];
-            convert_yuv_to_rgba(self.sws_context, self.yuv_frame, rgba_data.as_mut_ptr());
 
-            (rgba_data, (w, h))
+            #[cfg(feature = "with-swscale")]
+            {
+                let num_pixels = w * h;
+                let mut rgba_data = vec![0; num_pixels * 4];
+                convert_yuv_to_rgba(self.sws_context, self.yuv_frame, rgba_data.as_mut_ptr());
+                (rgba_data, (w, h))
+            }
+
+            #[cfg(not(feature = "with-swscale"))]
+            {
+                let cbcr_w = (w+1)/2;
+                let cbcr_h = (h+1)/2;
+
+                let mut y_data = vec![0; w * h];
+                let mut cb_data = vec![0; cbcr_w * cbcr_h];
+                let mut cr_data = vec![0; cbcr_w * cbcr_h];
+
+                get_yuv_frame(self.yuv_frame, y_data.as_mut_ptr(), cb_data.as_mut_ptr(), cr_data.as_mut_ptr());
+
+                let rgba = h263_rs_yuv::bt601::yuv420_to_rgba(&y_data, &cb_data, &cr_data, w, cbcr_w);
+                (rgba, (w, h))
+            }
         }
     }
 }
@@ -60,6 +81,7 @@ impl Vp6State {
 impl Drop for Vp6State {
     fn drop(&mut self) {
         unsafe {
+            #[cfg(feature = "with-swscale")]
             sws_freeContext(self.sws_context);
             av_frame_free(&mut self.yuv_frame);
             av_packet_free(&mut self.packet);

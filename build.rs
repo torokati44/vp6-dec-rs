@@ -163,7 +163,7 @@ fn main() {
         }
     }
 
-    if cfg!(feature = "allow-lgpl") {
+    if cfg!(feature = "with-swscale") {
         const LIBSWSCALE_MIN: &str = "4.1.100";
         let swscale = pkg_config::Config::new()
             .atleast_version(LIBSWSCALE_MIN)

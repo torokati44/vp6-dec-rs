@@ -27,6 +27,7 @@ pub struct AvCodecContext {
 pub struct AvDictionary {
     private: [u8; 0],
 }
+#[cfg(feature = "with-swscale")]
 #[repr(C)]
 pub struct SwsContext {
     private: [u8; 0],
@@ -58,6 +59,7 @@ extern "C" {
         frame: *mut AvFrame,
     ) -> ::std::os::raw::c_int;
 
+    #[cfg(feature = "with-swscale")]
     pub fn sws_freeContext(context: *mut SwsContext);
 }
 
@@ -71,7 +73,17 @@ extern "C" {
     pub fn frame_width(arg1: *mut AvFrame) -> ::std::os::raw::c_int;
     pub fn frame_height(arg1: *mut AvFrame) -> ::std::os::raw::c_int;
 
+
+    pub fn get_yuv_frame(
+        yuv_frame: *mut AvFrame,
+        y_data: *mut ::std::os::raw::c_uchar,
+        cb_data: *mut ::std::os::raw::c_uchar,
+        cr_data: *mut ::std::os::raw::c_uchar,
+    );
+
+    #[cfg(feature = "with-swscale")]
     pub fn make_converter_context(yuv_frame: *mut AvFrame) -> *mut SwsContext;
+    #[cfg(feature = "with-swscale")]
     pub fn convert_yuv_to_rgba(
         context: *mut SwsContext,
         yuv_frame: *mut AvFrame,
